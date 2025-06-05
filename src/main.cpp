@@ -8,6 +8,7 @@ public:
 	const float y;
 	const float z;
 
+	// Constructor
 	Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 
 	// Returns the sum of two vectors
@@ -25,11 +26,11 @@ public:
 	// Returns the product of two vectors
 	Vector3 operator*(const Vector3& other) const
 	{
-		return Vector3(x * other.x, y * other.y, z * other.z)
+		return Vector3(x * other.x, y * other.y, z * other.z);
 	}
 
 	// Returns true if two vectors are equal, false otherwise
-	Vector3 operator==(const Vector3& other) const
+	bool operator==(const Vector3& other) const
 	{
 		if (x == other.x) && (y == other.y) && (z == other.z)
 		{
@@ -57,9 +58,14 @@ public:
 		return Vector3(vector.x / length, vector.y / length, vector.z / length);
 	}
 
-	// Returns the normalized dot product of two vectors
+	// Returns raw dot product of two vectors.
 	// AKA how much two vectors point in the same direction on a scale of (-1, 0, 1)
-	float dotProduct(const Vector3& other) const
+	float dot(const Vector3& other) const
+	{
+		return (x * other.x) + (y * other.y) + (z * other.z);
+	}
+	// Returns the normalized dot product of two vectors
+	float dotNormalized(const Vector3& other) const
 	{
 		const float dotNumerator = (x * other.x) + (y * other.y) + (z * other.z);
 		const float dotDenominator = length(x, y, z) * 
@@ -77,4 +83,31 @@ public:
 
 		return Vector3(ihat, jhat, khat);
 	}
+};
+
+// For implementing Matrix 4x4 class.
+class Vector4
+{
+public:
+	float x;
+	float y; 
+	float z; 
+	float t;
+
+	// Constructor
+	Vector4(float x, float y, float z, float t) : x(x), y(y), z(z), t(t) {}
+};
+
+class Matrix4x4
+{
+public:
+	Vector4 x;
+	Vector4 y;
+	Vector4 z;
+	Vector4 t;
+
+	// Constructor
+	Matrix4x4(Vector4 x, Vector4 y, Vector4 z, Vector4 t) : x(x), y(y), z(z), t(t) {}
+
+
 };
