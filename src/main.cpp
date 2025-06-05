@@ -22,6 +22,7 @@ public:
 		return Vector3(x - other.x, y - other.y, z - other.z);
 	}
 
+	// Returns the product of two vectors
 	Vector3 operator*(const Vector3& other) const
 	{
 		return Vector3(x * other.x, y * other.y, z * other.z)
@@ -43,8 +44,18 @@ public:
 	float dotProduct(const Vector3& other) const
 	{
 		const float dotNumerator = (x * other.x) + (y * other.y) + (z * other.z);
-		const float dotDenominator = std::sqrt((x * x) + (y * y) + (z * z)) * 
-							std::sqrt((other.x * other.x) + (other.y * other.y) + (other.z * other.z));
+		const float dotDenominator = magnitude(x, y, z) * 
+							magnitude(other.x, other.y, other.z);
 		return (dotNumerator / dotDenominator);
+	}
+
+	// Creates a third vector perpendicular to parallelogram spanned by two vectors
+	Vector3 crossProduct(const Vector3& other) const
+	{
+		float ihat = (y * other.z) - (z * other.y);
+		float jhat = (z * other.x) - (x * other.z);
+		float khat = (x * other.y) - (y * other.x);
+
+		return Vector3(ihat, jhat, khat);
 	}
 };
