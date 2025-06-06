@@ -262,6 +262,7 @@ public:
 		return Matrix3x3(columnA, columnB, columnC);
 	}
 
+	// Rotates around the x axis
 	static Matrix3x3 rotationX(float angleRad)
 	{
 		float c = std::cos(angleRad);
@@ -272,6 +273,31 @@ public:
 			Vector3(0, c, s),  // Second column (rotated Y)
 			Vector3(0, -s, c)  // Third column (rotated Z)
 		);
+	}
+
+	// Rotates around the y axis
+	Matrix3x3 rotationY(float angle) 
+	{
+		float c = cos(angle);
+		float s = sin(angle);
+
+		return Matrix3x3({
+			{ c, 0, s},
+			{ 0, 1, 0},
+			{-s, 0, c}
+			});
+	}
+
+	// Rotates around the z axis
+	Matrix3x3 RotationZ(float angle) {
+		float c = cos(angle);
+		float s = sin(angle);
+
+		return Matrix3x3({
+			{ c, -s, 0 },
+			{ s,  c, 0 },
+			{ 0,  0, 1 }
+			});
 	}
 
 	// Scales a 3x3 matrix by corresponding vector scalar.
