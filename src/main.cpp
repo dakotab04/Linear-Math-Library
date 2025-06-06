@@ -93,7 +93,6 @@ public:
 	}
 };
 
-// For implementing Matrix 4x4 class.
 class Vector4
 {
 public:
@@ -104,6 +103,40 @@ public:
 
 	// Constructor
 	Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+
+	// Addition of two 4d vectors
+	Vector4 operator+(const Vector4& other) const
+	{
+		return Vector4(x + other.x, y + other.y, z + other.z, w + other.w);
+	}
+
+	// Subtraction of two 4d vectors
+	Vector4 operator-(const Vector4& other) const
+	{
+		return Vector4(x - other.x, y - other.y, z - other.z, w - other.w);
+	}
+
+	// Multiplication of two 4d vectors
+	Vector4 operator*(const Vector4& other) const
+	{
+		return Vector4(x * other.x, y * other.y, z * other.z, w * other.w);
+	}
+
+	// Returns true if two 4d vectors are equal, false otherwise
+	bool operator==(const Vector4& other) const
+	{
+		if ((x == other.x) && (y == other.y) && (z == other.z) && (w == other.w)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	// Scales 4d vector according to scalar
+	Vector4 scale(const float scalar) const
+	{
+		return Vector3(x * scalar, y * scalar, z * scalar, w * scalar);
+	}
 };
 
 class Matrix3x3
@@ -131,7 +164,13 @@ public:
 	// Matrix-matrix multiplication
 	Matrix3x3 operator*(const Matrix3x3& other) const
 	{
-		return Matrix3x3((x * other.x), (y * other.y), (z * other.z));
+		Matrix3x3 t = this->transpose();
+
+		return Matrix3x3(
+			Vector3(t.x.dot(other.x), t.y.dot(other.x), t.z.dot(other.x)),
+			Vector3(t.x.dot(other.y), t.y.dot(other.y), t.z.dot(other.y)),
+			Vector3(t.x.dot(other.z), t.y.dot(other.z), t.z.dot(other.z))
+		);
 	}
 
 	// Scales 3x3 matrix by corresponding scalar
@@ -165,12 +204,12 @@ public:
 		return Matrix3x3(
 			Vector3(1, 0, 0), // x-axis (right)
 			Vector3(0, 1, 0), // y-axis (up)
-			Vector3(0, 0, 1), // z-axis (forward)
+			Vector3(0, 0, 1) // z-axis (forward)
 		);
 	}
 
 	// Flips matrix over on its diagonal
-	Matrix3x3 transpose()
+	Matrix3x3 transpose() const
 	{
 		Vector3 columnA = Vector3(x.x, y.x, z.x);
 		Vector3 columnB = Vector3(x.y, y.y, z.y);
@@ -188,6 +227,16 @@ public:
 			Vector3(1, 0, 0),  // First column (X-axis unchanged)
 			Vector3(0, c, s),  // Second column (rotated Y)
 			Vector3(0, -s, c)  // Third column (rotated Z)
+		);
+	}
+
+	// Scales a 3x3 matrix by corresponding vector scalar.
+	static Matrix3x3 scale(const Vector3& s)
+	{
+		return Matrix3x3(
+			Vector3(s.x, 0, 0),
+			Vector3(0, s.y, 0),
+			Vector3(0, 0, s.z)
 		);
 	}
 };
@@ -218,7 +267,35 @@ public:
 	// Matrix-matrix multiplication
 	Matrix4x4 operator*(const Matrix4x4& other) const
 	{
-		return Matrix4x4((x * other.x), (y * other.y), (z * other.z), (t * other.t));
+		const Vector4 col0(
+			x.x * other.x.x + y.x * other.x.y + z.x * other.x.z + t.x * other.x.w,
+			x.y * other.x.x + y.y * other.x.y + z.y * other.x.z + t.y * other.x.w,
+			x.z * other.x.x + y.z * other.x.y + z.z * other.x.z + t.z * other.x.w,
+			x.w * other.x.x + y.w * other.x.y + z.w * other.x.z + t.w * other.x.w
+		);
+
+		const Vector4 col1(
+			x.x * other.y.x + y.x * other.y.y + z.x * other.y.z + t.x * other.y.w,
+			x.y * other.y.x + y.y * other.y.y + z.y * other.y.z + t.y * other.y.w,
+			x.z * other.y.x + y.z * other.y.y + z.z * other.y.z + t.z * other.y.w,
+			x.w * other.y.x + y.w * other.y.y + z.w * other.y.z + t.w * other.y.w
+		);
+
+		const Vector4 col2(
+			x.x * other.z.x + y.x * other.z.y + z.x * other.z.z + t.x * other.z.w,
+			x.y * other.z.x + y.y * other.z.y + z.y * other.z.z + t.y * other.z.w,
+			x.z * other.z.x + y.z * other.z.y + z.z * other.z.z + t.z * other.z.w,
+			x.w * other.z.x + y.w * other.z.y + z.w * other.z.z + t.w * other.z.w
+		);
+
+		const Vector4 col3(
+			x.x * other.t.x + y.x * other.t.y + z.x * other.t.z + t.x * other.t.w,
+			x.y * other.t.x + y.y * other.t.y + z.y * other.t.z + t.y * other.t.w,
+			x.z * other.t.x + y.z * other.t.y + z.z * other.t.z + t.z * other.t.w,
+			x.w * other.t.x + y.w * other.t.y + z.w * other.t.z + t.w * other.t.w
+		);
+
+		return Matrix4x4(col0, col1, col2, col3);
 	}
 
 	// Scales 4x4 matrix by corresponding scalar
@@ -272,7 +349,7 @@ public:
 	}
 
 	// Flips matrix over on its diagonal
-	Matrix4x4 transpose()
+	Matrix4x4 transpose() const
 	{
 		Vector4 columnA = Vector4(x.x, y.x, z.x, t.x);
 		Vector4 columnB = Vector4(x.y, y.y, z.y, t.y);
