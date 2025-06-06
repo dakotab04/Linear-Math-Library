@@ -103,7 +103,7 @@ public:
 	float w;
 
 	// Constructor
-	Vector4(float x, float y, float z, float t) : x(x), y(y), z(z), t(t) {}
+	Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 };
 
 class Matrix4x4
@@ -142,7 +142,7 @@ public:
 	}
 
 	// Matrix-vector multiplication
-	Matrix4x4 linearTransform(const Vector4& vector) const
+	Vector4 linearTransform(const Vector4& vector) const
 	{
 		float xVal = (x.x * vector.x) + (x.y * vector.y) + (x.z * vector.z) + (x.w * vector.w);
 		float yVal = (y.x * vector.x) + (y.y * vector.y) + (y.z * vector.z) + (y.w * vector.w);
