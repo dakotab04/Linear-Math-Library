@@ -11,25 +11,25 @@ public:
 	// Constructor
 	Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 
-	// Returns the sum of two vectors
+	// Returns the sum of two 3d vectors
 	Vector3 operator+(const Vector3& other) const
 	{
 		return Vector3(x + other.x, y + other.y, z + other.z);
 	}
 
-	// Returns the difference of two vectors
+	// Returns the difference of two 3d vectors
 	Vector3 operator-(const Vector3& other) const
 	{
 		return Vector3(x - other.x, y - other.y, z - other.z);
 	}
 
-	// Returns the product of two vectors
+	// Returns the product of two 3d vectors
 	Vector3 operator*(const Vector3& other) const
 	{
 		return Vector3(x * other.x, y * other.y, z * other.z);
 	}
 
-	// Returns true if two vectors are equal, false otherwise
+	// Returns true if two 3d vectors are equal, false otherwise
 	bool operator==(const Vector3& other) const
 	{
 		if ((x == other.x) && (y == other.y) && (z == other.z))
@@ -39,19 +39,19 @@ public:
 		return false;
 	}
 
-	// Scales vector according to scalar
+	// Scales 3d vector according to scalar
 	Vector3 scale(const float scalar) const
 	{
 		return Vector3(x * scalar, y * scalar, z * scalar);
 	}
-
-	// Returns magnitude of any vector
+	
+	// Returns magnitude of any 3d vector
 	float length() const
 	{
 		return std::sqrt((x * x) + (y * y) + (z * z));
 	}
 
-	// Normalizes any vector
+	// Normalizes any 3d vector
 	Vector3 normalize() const
 	{
 		float v_length = length(); // magnitude of vector
@@ -64,6 +64,7 @@ public:
 	{
 		return (x * other.x) + (y * other.y) + (z * other.z);
 	}
+
 	// Returns the normalized dot product of two vectors
 	float dotNormalized(const Vector3& other) const
 	{
@@ -135,7 +136,36 @@ public:
 	// Scales 4d vector according to scalar
 	Vector4 scale(const float scalar) const
 	{
-		return Vector3(x * scalar, y * scalar, z * scalar, w * scalar);
+		return Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
+	}
+
+	// Returns magnitude of any 4d vector
+	float length() const
+	{
+		return std::sqrt((x * x) + (y * y) + (z * z) + (w * w);
+	}
+
+	// Normalizes any 4d vector
+	Vector4 normalize() const
+	{
+		float v_length = length(); // magnitude of vector
+		return Vector4(x / v_length, y / v_length, z / v_length, w / v_length);
+	}
+
+	// Returns raw dot product of two 3d vectors.
+	// AKA how much two vectors point in the same direction on a scale of (-1, 0, 1)
+	float dot(const Vector4& other) const
+	{
+		return (x * other.x) + (y * other.y) + (z * other.z) + (w * other.w);
+	}
+
+	// Returns the normalized dot product of two 3d vectors
+	float dotNormalized(const Vector4& other) const
+	{
+		const float dotNumerator = (x * other.x) + (y * other.y) + (z * other.z) + (w * other.w);
+		const float dotDenominator = this->length() * other.length();
+
+		return (dotNumerator / dotDenominator);
 	}
 };
 
