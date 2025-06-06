@@ -58,14 +58,14 @@ public:
 		return Vector3(x / v_length, y / v_length, z / v_length);
 	}
 
-	// Returns raw dot product of two vectors.
+	// Returns raw dot product of two 3d vectors.
 	// AKA how much two vectors point in the same direction on a scale of (-1, 0, 1)
 	float dot(const Vector3& other) const
 	{
 		return (x * other.x) + (y * other.y) + (z * other.z);
 	}
 
-	// Returns the normalized dot product of two vectors
+	// Returns the normalized dot product of two 3d vectors
 	float dotNormalized(const Vector3& other) const
 	{
 		const float dotNumerator = (x * other.x) + (y * other.y) + (z * other.z);
@@ -74,7 +74,7 @@ public:
 		return (dotNumerator / dotDenominator);
 	}
 
-	// Creates a third vector perpendicular to parallelogram spanned by two vectors
+	// Creates a third vector perpendicular to parallelogram spanned by two 3d vectors
 	// With length equal to area of that parallelogram
 	Vector3 cross(const Vector3& other) const
 	{
@@ -85,11 +85,14 @@ public:
 		return Vector3(ihat, jhat, khat);
 	}
 
+	// Returns distance between 2 3d vectors
 	float distance(const Vector3& other) const {
 		return (*this - other).length();
 	}
 
-	Vector3 reflect(const Vector3& normal) const {
+	// Reflects 3d vector
+	Vector3 reflect(const Vector3& normal) const 
+	{
 		return *this - normal.scale(2.0f * this->dot(normal));
 	}
 };
@@ -152,20 +155,31 @@ public:
 		return Vector4(x / v_length, y / v_length, z / v_length, w / v_length);
 	}
 
-	// Returns raw dot product of two 3d vectors.
+	// Returns raw dot product of two 4d vectors.
 	// AKA how much two vectors point in the same direction on a scale of (-1, 0, 1)
 	float dot(const Vector4& other) const
 	{
 		return (x * other.x) + (y * other.y) + (z * other.z) + (w * other.w);
 	}
 
-	// Returns the normalized dot product of two 3d vectors
+	// Returns the normalized dot product of two 4d vectors
 	float dotNormalized(const Vector4& other) const
 	{
 		const float dotNumerator = (x * other.x) + (y * other.y) + (z * other.z) + (w * other.w);
 		const float dotDenominator = this->length() * other.length();
 
 		return (dotNumerator / dotDenominator);
+	}
+
+	// Returns the distance between two 4d vectors
+	float distance(const Vector4& other) const {
+		return (*this - other).length();
+	}
+
+	// Reflects 4d Vector
+	Vector3 reflect(const Vector4& normal) const
+	{
+		return *this - normal.scale(2.0f * this->dot(normal));
 	}
 };
 
