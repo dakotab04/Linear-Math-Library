@@ -106,6 +106,51 @@ public:
 	Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 };
 
+class Matrix3x3
+{
+public:
+	Vector3 x;
+	Vector3 y;
+	Vector3 z;
+
+	// Constructor
+	Matrix3x3(Vector3 x, Vector3 y, Vector3 z) : x(x), y(y), z(z) {}
+
+	// Matrix-matrix addition
+	Matrix3x3 operator+(const Matrix3x3& other) const
+	{
+		return Matrix3x3((x + other.x), (y + other.y), (z + other.z));
+	}
+
+	// Matrix-matrix subtraction
+	Matrix3x3 operator-(const Matrix3x3& other) const
+	{
+		return Matrix3x3((x - other.x), (y - other.y), (z - other.z));
+	}
+
+	// Matrix-matrix multiplication
+	Matrix3x3 operator*(const Matrix3x3& other) const
+	{
+		return Matrix3x3((x * other.x), (y * other.y), (z * other.z));
+	}
+
+	// Scales 3x3 matrix by corresponding scalar
+	Matrix3x3 scalar(const float s) const
+	{
+		return Matrix3x3((x * s), (y * s), (z * s));
+	}
+
+	// 3x3Matrix-vector3 multiplication
+	Vector3 linearTransform(const Vector3& vector) const
+	{
+		float xVal = (x.x * vector.x) + (x.y * vector.y) + (x.z * vector.z);
+		float yVal = (y.x * vector.x) + (y.y * vector.y) + (y.z * vector.z);
+		float zVal = (z.x * vector.x) + (z.y * vector.y) + (z.z * vector.z);
+
+		return Vector3(xVal, yVal, zVal);
+	}
+};
+
 class Matrix4x4
 {
 public:
@@ -141,7 +186,7 @@ public:
 		return Matrix4x4((x * s), (y * s), (z * s), (t * s));
 	}
 
-	// Matrix-vector multiplication
+	// 4x4Matrix-vector4 multiplication
 	Vector4 linearTransform(const Vector4& vector) const
 	{
 		float xVal = (x.x * vector.x) + (x.y * vector.y) + (x.z * vector.z) + (x.w * vector.w);
