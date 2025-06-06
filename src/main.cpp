@@ -149,6 +149,47 @@ public:
 
 		return Vector3(xVal, yVal, zVal);
 	}
+
+	// Returns determinant of a 3x3 matrix
+	float determinant() const
+	{
+		return
+			x.x * (y.y * z.z - y.z * z.y) -
+			y.x * (x.y * z.z - x.z * z.y) +
+			z.x * (x.y * y.z - x.z * y.y);
+	}
+
+	// Resets a 3x3 matrix
+	static Matrix3x3 identity()
+	{
+		return Matrix3x3(
+			Vector3(1, 0, 0), // x-axis (right)
+			Vector3(0, 1, 0), // y-axis (up)
+			Vector3(0, 0, 1), // z-axis (forward)
+		);
+	}
+
+	// Flips matrix over on its diagonal
+	Matrix3x3 transpose()
+	{
+		Vector3 columnA = Vector3(x.x, y.x, z.x);
+		Vector3 columnB = Vector3(x.y, y.y, z.y);
+		Vector3 columnC = Vector3(x.z, y.z, z.z);
+
+		return Matrix3x3(columnA, columnB, columnC);
+	}
+
+	static Matrix3x3 rotationX(float angleRad)
+	{
+		float c = std::cos(angleRad);
+		float s = std::sin(angleRad);
+
+		return Matrix3x3(
+			Vector3(1, 0, 0),  // First column (X-axis unchanged)
+			Vector3(0, c, s),  // Second column (rotated Y)
+			Vector3(0, -s, c)  // Third column (rotated Z)
+		);
+	}
 };
 
 class Matrix4x4
