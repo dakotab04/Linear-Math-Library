@@ -92,10 +92,10 @@ public:
 	float x;
 	float y; 
 	float z; 
-	float t;
+	float w;
 
 	// Constructor
-	Vector4(float x, float y, float z, float t) : x(x), y(y), z(z), t(t) {}
+	Vector4(float x, float y, float z, float t) : x(x), y(y), z(z), w(w) {}
 };
 
 class Matrix4x4
