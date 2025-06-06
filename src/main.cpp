@@ -143,4 +143,27 @@ public:
 
 		return Vector4(xVal, yVal, zVal, wVal);
 	}
+
+	// Helper function for determinant
+	float det3x3(float a1, float a2, float a3,
+				 float b1, float b2, float b3,
+				 float c1, float c2, float c3)
+	{
+		return a1 * (b2 * c3 - b3 * c2)
+			- a2 * (b1 * c3 - b3 * c1)
+			+ a3 * (b1 * c2 - b2 * c1);
+	}
+
+	// Calculates determinant of 4x4 matrix
+	float determinant()
+	{
+		const float a = x.x, b = x.y, c = x.z, d = x.w;
+
+		float detA = det3x3(y.y, y.z, y.w, z.y, z.z, z.w, t.y, t.z, t.w);
+		float detB = det3x3(y.x, y.z, y.w, z.x, z.z, z.w, t.x, t.z, t.w);
+		float detC = det3x3(y.x, y.y, y.w, z.x, z.y, z.w, t.x, t.y, t.w);
+		float detD = det3x3(y.x, y.y, y.z, z.x, z.y, z.z, t.x, t.y, t.z);
+
+		return a * detA - b * detB + c * detC - d * detD;
+	}
 };
