@@ -32,7 +32,7 @@ public:
 	// Returns true if two vectors are equal, false otherwise
 	bool operator==(const Vector3& other) const
 	{
-		if (x == other.x) && (y == other.y) && (z == other.z)
+		if ((x == other.x) && (y == other.y) && (z == other.z))
 		{
 			return true;
 		}
@@ -46,16 +46,16 @@ public:
 	}
 
 	// Returns magnitude of any vector
-	float length(const Vector3& vector)
+	float length()
 	{
-		return std::sqrt((vector.x * vector.x) + (vector.y * vector.y) + (vector.z * vector.z))
+		return std::sqrt((x * x) + (y * y) + (z * z));
 	}
 
 	// Normalizes any vector
-	Vector3 normalize(const Vector3& vector)
+	Vector3 normalize()
 	{
-		const float length = std::sqrt((vector.x * vector.x) + (vector.y * vector.y) + (vector.z * vector.z));
-		return Vector3(vector.x / length, vector.y / length, vector.z / length);
+		float v_length = length(); // magnitude of vector
+		return Vector3(x / v_length, y / v_length, z / length);
 	}
 
 	// Returns raw dot product of two vectors.
