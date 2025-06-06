@@ -75,13 +75,21 @@ public:
 
 	// Creates a third vector perpendicular to parallelogram spanned by two vectors
 	// With length equal to area of that parallelogram
-	Vector3 crossProduct(const Vector3& other) const
+	Vector3 cross(const Vector3& other) const
 	{
 		float ihat = (y * other.z) - (z * other.y);
 		float jhat = (z * other.x) - (x * other.z);
 		float khat = (x * other.y) - (y * other.x);
 
 		return Vector3(ihat, jhat, khat);
+	}
+
+	float distance(const Vector3& other) const {
+		return (*this - other).length();
+	}
+
+	Vector3 reflect(const Vector3& normal) const {
+		return *this - normal.scale(2.0f * this->dot(normal));
 	}
 };
 
@@ -134,7 +142,7 @@ public:
 	}
 
 	// Matrix-vector multiplication
-	Matrix4x4 linearTransformation(const Vector4& vector) const
+	Matrix4x4 linearTransform(const Vector4& vector) const
 	{
 		float xVal = (x.x * vector.x) + (x.y * vector.y) + (x.z * vector.z) + (x.w * vector.w);
 		float yVal = (y.x * vector.x) + (y.y * vector.y) + (y.z * vector.z) + (y.w * vector.w);
@@ -166,4 +174,23 @@ public:
 
 		return a * detA - b * detB + c * detC - d * detD;
 	}
+
+	static Matrix4x4 identity()
+	{
+		return Matrix4x4(
+			Vector4(1, 0, 0, 0), // x-axis (right)
+			Vector4(0, 1, 0, 0), // y-axis (up)
+			Vector4(0, 0, 1, 0), // z-axis (forward)
+			Vector4(0, 0, 0, 1)  // translation + perspective
+		);
+	}
+
+	//Matrix4x4 transpose()
+	
+	//static Matrix4x4 rotationX(float angleRad)
+		
+	//static Matrix4x4 scale(const Vector3& s)
+		
+	//static Matrix4x4 translation(const Vector3& t)
 };
+
