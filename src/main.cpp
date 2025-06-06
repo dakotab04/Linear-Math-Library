@@ -135,10 +135,10 @@ public:
 		return Matrix4x4((x * other.x), (y * other.y), (z * other.z), (t * other.t));
 	}
 
-	// Scales 4x4 matrix
-	Matrix4x4 scale(const float scalar) const
+	// Scales 4x4 matrix by corresponding scalar
+	Matrix4x4 scalar(const float s) const
 	{
-		return Matrix4x4((x * scalar), (y * scalar), (z * scalar), (t * scalar));
+		return Matrix4x4((x * s), (y * s), (z * s), (t * s));
 	}
 
 	// Matrix-vector multiplication
@@ -196,19 +196,40 @@ public:
 		return Matrix4x4(columnA, columnB, columnC, columnD);
 	}
 	
+	// Rotates a 4x4 matrix around the X-axis by given angle in radians.
 	static Matrix4x4 rotationX(float angleRad)
 	{
+		float c = std::cos(angleRad);
+		float s = std::sin(angleRad);
 
+		return Matrix4x4(
+			Vector4(1, 0, 0, 0),
+			Vector4(0, c, -s, 0),
+			Vector4(0, s, c, 0),
+			Vector4(0, 0, 0, 1)
+		);
 	}
-		
+	
+	// Scales a 4x4 matrix by corresponding vector scalar.
 	static Matrix4x4 scale(const Vector3& s)
 	{
-
+		return Matrix4x4(
+			Vector4(s.x, 0, 0, 0),
+			Vector4(0, s.y, 0, 0),
+			Vector4(0, 0, s.z, 0),
+			Vector4(0, 0, 0, 1)
+		);
 	}
-		
+
+	// Translates a 4x4 matrix by given vector along the x, y, and z axes.
 	static Matrix4x4 translation(const Vector3& t)
 	{
-
+		return Matrix4x4(
+			Vector4(1, 0, 0, 0),
+			Vector4(0, 1, 0, 0),
+			Vector4(0, 0, 1, 0),
+			Vector4(t.x, t.y, t.z, 1)
+		);
 	}
 };
 
