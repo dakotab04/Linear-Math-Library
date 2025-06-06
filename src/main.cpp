@@ -103,7 +103,7 @@ public:
 	float w;
 
 	// Constructor
-	Vector4(float x, float y, float z, float t) : x(x), y(y), z(z), w(w) {}
+	Vector4(float x, float y, float z, float t) : x(x), y(y), z(z), t(t) {}
 };
 
 class Matrix4x4
@@ -185,12 +185,30 @@ public:
 		);
 	}
 
-	//Matrix4x4 transpose()
+	// Flips matrix over on its diagonal
+	Matrix4x4 transpose()
+	{
+		Vector4 columnA = Vector4(x.x, y.x, z.x, t.x);
+		Vector4 columnB = Vector4(x.y, y.y, z.y, t.y);
+		Vector4 columnC = Vector4(x.z, y.z, z.z, t.z);
+		Vector4 columnD = Vector4(x.w, y.w, z.w, t.w);
+
+		return Matrix4x4(columnA, columnB, columnC, columnD);
+	}
 	
-	//static Matrix4x4 rotationX(float angleRad)
+	static Matrix4x4 rotationX(float angleRad)
+	{
+
+	}
 		
-	//static Matrix4x4 scale(const Vector3& s)
+	static Matrix4x4 scale(const Vector3& s)
+	{
+
+	}
 		
-	//static Matrix4x4 translation(const Vector3& t)
+	static Matrix4x4 translation(const Vector3& t)
+	{
+
+	}
 };
 
