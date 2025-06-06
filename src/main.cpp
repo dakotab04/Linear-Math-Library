@@ -46,16 +46,16 @@ public:
 	}
 
 	// Returns magnitude of any vector
-	float length()
+	float length() const
 	{
 		return std::sqrt((x * x) + (y * y) + (z * z));
 	}
 
 	// Normalizes any vector
-	Vector3 normalize()
+	Vector3 normalize() const
 	{
 		float v_length = length(); // magnitude of vector
-		return Vector3(x / v_length, y / v_length, z / length);
+		return Vector3(x / v_length, y / v_length, z / v_length);
 	}
 
 	// Returns raw dot product of two vectors.
@@ -68,8 +68,8 @@ public:
 	float dotNormalized(const Vector3& other) const
 	{
 		const float dotNumerator = (x * other.x) + (y * other.y) + (z * other.z);
-		const float dotDenominator = length(x, y, z) * 
-							length(other.x, other.y, other.z);
+		const float dotDenominator = this->length() * other.length();
+
 		return (dotNumerator / dotDenominator);
 	}
 
@@ -109,5 +109,38 @@ public:
 	// Constructor
 	Matrix4x4(Vector4 x, Vector4 y, Vector4 z, Vector4 t) : x(x), y(y), z(z), t(t) {}
 
+	// Matrix-matrix addition
+	Matrix4x4 operator+(const Matrix4x4& other) const
+	{
+		return Matrix4x4((x + other.x), (y + other.y), (z + other.z), (t + other.t));
+	}
 
+	// Matrix-matrix subtraction
+	Matrix4x4 operator-(const Matrix4x4& other) const
+	{
+		return Matrix4x4((x - other.x), (y - other.y), (z - other.z), (t - other.t));
+	}
+
+	// Matrix-matrix multiplication
+	Matrix4x4 operator*(const Matrix4x4& other) const
+	{
+		return Matrix4x4((x * other.x), (y * other.y), (z * other.z), (t * other.t));
+	}
+
+	// Scales 4x4 matrix
+	Matrix4x4 scale(const float scalar) const
+	{
+		return Matrix4x4((x * scalar), (y * scalar), (z * scalar), (t * scalar));
+	}
+
+	// Matrix-vector multiplication
+	Matrix4x4 linearTransformation(const Vector4& vector) const
+	{
+		float xVal = (x.x * vector.x) + (x.y * vector.y) + (x.z * vector.z) + (x.w * vector.w);
+		float yVal = (y.x * vector.x) + (y.y * vector.y) + (y.z * vector.z) + (y.w * vector.w);
+		float zVal = (z.x * vector.x) + (z.y * vector.y) + (z.z * vector.z) + (z.w * vector.w);
+		float wVal = (t.x * vector.x) + (t.y * vector.y) + (t.z * vector.z) + (t.w * vector.w);
+
+		return Vector4(xVal, yVal, zVal, wVal);
+	}
 };
